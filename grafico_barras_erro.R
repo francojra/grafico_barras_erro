@@ -1,35 +1,35 @@
 
-# Gr·fico de barras com erro padr„o --------------------------------------------------------------------------------------------------------
+# Gr√°fico de barras com erro padr√£o --------------------------------------------------------------------------------------------------------
 
 # Baixar dados -----------------------------------------------------------------------------------------------------------------------------
 
 datasets::ToothGrowth
 dados <- ToothGrowth # Nomeando o conjunto de dados
 
-# Transformar vari·veis categÛricas como fator ---------------------------------------------------------------------------------------------
+# Transformar vari√°veis categ√≥ricas como fator ---------------------------------------------------------------------------------------------
 
-dados$supp <- as.factor(dados$supp) # Vari·vel categÛrica com dois nÌveis
-dados$dose <- as.factor(dados$dose) # Vari·vel categÛrica y
-dados$len <- as.numeric(dados$len) # Vari·vel numÈrica x
+dados$supp <- as.factor(dados$supp) # Vari√°vel categ√≥rica com dois n√≠veis
+dados$dose <- as.factor(dados$dose) # Vari√°vel categ√≥rica y
+dados$len <- as.numeric(dados$len) # Vari√°vel num√©rica x
 
-# Verificar vari·veis numÈricas e categÛricas ----------------------------------------------------------------------------------------------------------------------
+# Verificar vari√°veis num√©ricas e categ√≥ricas ----------------------------------------------------------------------------------------------------------------------
 
-library(dplyr) # Pacote que serve para verificar os dados e calcular mÈdias e desvios-padr„o
+library(dplyr) # Pacote que serve para verificar os dados e calcular m√©dias e desvios-padr√£o
 glimpse(dados)
 
-# Calcular mÈdias, desvios-padr„o e erros-padr„o -------------------------------------------------------------------------------------------
+# Calcular m√©dias, desvios-padr√£o e erros-padr√£o -------------------------------------------------------------------------------------------
 
-# drop_na pode ser adicionado a funÁ„o caso seja necess·rio retirar dados faltantes da an·lise
+# drop_na pode ser adicionado a fun√ß√£o caso seja necess√°rio retirar dados faltantes da an√°lise
 
 dados_tooth <- dados %>%
-  group_by(supp, dose) %>%
-  dplyr::summarise(media = mean(len),
-                   se = sd(len) / sqrt(length(len)))
-dados_tooth
+  group_by(supp, dose) %>% # Agrupar m√©dia e erro-padr√£o por dose e tipo de suplemento (supp)
+  dplyr::summarise(media = mean(len),  # C√°lculo da m√©dia
+                   se = sd(len) / sqrt(length(len))) # C√°lculo do erro-padr√£o
+dados_tooth # Novo conjunto de dados
 
-# Gr·fico ----------------------------------------------------------------------------------------------------------------------------------
+# Gr√°fico ----------------------------------------------------------------------------------------------------------------------------------
 
-library(ggplot2) # Pacote para produzir o gr·fico
+library(ggplot2) # Pacote para produzir o gr√°fico
 
 ggplot(dados_tooth, aes(x = dose, y = media, fill = supp)) +
   geom_col(position = "dodge") +
@@ -38,5 +38,5 @@ ggplot(dados_tooth, aes(x = dose, y = media, fill = supp)) +
   scale_fill_manual(values = c("#8c510a","#01665e"),
                     name = "Tipo de suplemento", breaks = c("OJ", "VC"),
                     labels = c("Suco de laranja", "Vitamina C")) +
-  labs(x = "Dose (mg)", y = "Comprimento dent·rio") +
+  labs(x = "Dose (mg)", y = "Comprimento dent√°rio") +
   theme_bw(base_size = 15)
